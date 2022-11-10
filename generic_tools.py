@@ -28,6 +28,9 @@ def stocker( chemin, contenu, is_json=False, verbose =False):
 
 def get_distances(texte1, texte2, N=1, liste_name =["jaccard", "braycurtis","dice", "cosinus"] ):
     dico = {}
+    if type(texte1) is list:
+      texte1 = " ".join(texte1)
+      texte2 = " ".join(texte2)
     for metric_name in liste_name :
         dico[metric_name] = []
         liste_resultat_dist2 = []

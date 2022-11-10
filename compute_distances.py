@@ -34,15 +34,18 @@ print("NB de txt trouvés", len(liste_txt))
 liste_json = glob.glob(f"{path_corpora}/*/*/*.json")
 print("NB de json trouvés", len(liste_json))
 
+#On exclut les JSON :
+l_path_auteurs = [x for x in glob.glob(f"{path_corpora}/*") if "json" not in x]
 
-for path_auteur in glob.glob(f"{path_corpora}/*"):
+for path_auteur in l_path_auteurs:
   nom_auteur = re.split("/", path_auteur)[-1]
   print("-"*20)
   print(f"  Auteur traité : {nom_auteur}")
   
   dico_out, dist_txt = {}, {}
-  liste_compare = []
-  for file_type in ["txt"]:
+  dic_compare = {}
+  for file_type in ["txt", "json"]:
+    dic_compare.setdefault(file_type, [])
     liste_txt_auteur = glob.glob("%s/*/*.%s"%(path_auteur, file_type))
     print(f"  NB {file_type} :", len(liste_txt_auteur))
 
@@ -51,15 +54,13 @@ for path_auteur in glob.glob(f"{path_corpora}/*"):
       elems = re.split("_", re.split("/", path_file)[-1])
       auteur,titre, version = elems[:3]
       version = re.sub("\.txt", "", version)
-
       if file_type =="txt":
-          liste_compare.append([version, lire_fichier(path_file)])
+          dic_compare[file_type].append([version, lire_fichier(path_file)])
       else:
           nom_mod = re.sub("\.json", "", elems[-1])
-          liste_compare.append([nom_mod,lire_fichier(path_file,True)])
+          configuration = f"{version}_{nom_mod}"
+          dic_compare[file_type].append([configuration,lire_fichier(path_file,True)])
           
-  print("  Versions comparées : ",[x[0]for x in liste_compare])
-  dico_out[file_type] = {}
   path_json = "%s_%s_distances.json"%(path_auteur, titre)
   if os.path.exists(path_json):
     if options.Force ==True:
@@ -67,13 +68,25 @@ for path_auteur in glob.glob(f"{path_corpora}/*"):
     else:
       print("Already DONE : ", path_json)
       continue
-  for ID1, version1 in enumerate(liste_compare):
-      for ID2, version2 in enumerate(liste_compare[ID1+1:]):
+  for file_type, liste_compare in dic_compare.items():
+    print("  Versions (txt)/configurations (json) comparées : ",[x[0]for x in liste_compare])
+    dico_out[file_type] = {}
+    ID1 = 0
+    for configuration1, content1  in liste_compare:
+      if file_type=="json":
+        version1, modele1 =re.split("_", configuration1)
+      ID2 = ID1+1
+      for configuration2, content2 in liste_compare[ID2:]:
+          if file_type=="json":
+            version2, modele2 =re.split("_", configuration2)
+            if version1!=version2 and modele1!=modele2:#Comparaison sans sens
+              continue
           liste1 = liste_compare[ID1][1]
           liste2 = liste_compare[ID2][1]
-          dico_dist = get_distances(liste1, liste2)
-          paire = "%s--%s"%(version1, version2)
+          dico_dist = get_distances(liste1, liste2)#TODO; json ?
+          paire = "%s--%s"%(configuration1, configuration2)
           dico_out[file_type][paire] = dico_dist
-  
+          ID2+=1
+      ID1+=1
   stocker(path_json, dico_out, is_json=True, verbose = True)
     
