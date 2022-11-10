@@ -7,8 +7,8 @@ Vous trouverez le corpus de texte sur dans le répertoire : (https://github.com/
 ## UTILISATION
 
 ### REN : 
-'''python Use_spacy.py -d "chemin"''' , (exemple DATA/*)
+'''' python Use_spacy.py -d "chemin" '''' , (exemple DATA/*)
 
 ### Distances :
 
-'''python compute_distances.py -d "chemin"''' , (exemple DATA/*)
+'''' python compute_distances.py -d "chemin" '''' , (exemple DATA/*)
