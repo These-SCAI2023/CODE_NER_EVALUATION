@@ -15,7 +15,7 @@ def get_parser():
     """
     parser = OptionParser()
     parser.add_option("-d", "--data_path", dest="data_path",
-                      help="""Chemin vers les fichiers txt (exemple DATA/*)""", type="string", default="DATA/*/")
+                      help="""Chemin vers les dossiers pour chaque livre (exemple DATA/*)""", type="string", default="DATA/*/")
     parser.add_option('-F', '--Force', help='Recalculer les distances même si déjà faites', action='store_true', default = False)
     return parser
 
@@ -33,7 +33,10 @@ liste_txt = glob.glob(f"{path_corpora}/*/*/*.txt")
 print("NB de txt trouvés", len(liste_txt))
 liste_json = glob.glob(f"{path_corpora}/*/*/*.json")
 print("NB de json trouvés", len(liste_json))
-
+if len(liste_txt)==0:
+  print("Aucun fichier txt trouvé.\n La structure des dossiers est probablement incorrecte, le répertoire doit être organisé comme suit : DOSSIER_LIVRE/Dossiersèversions")
+  print("exiting....")
+  exit()
 #On exclut les JSON :
 l_path_auteurs = [x for x in glob.glob(f"{path_corpora}/*") if "json" not in x]
 
