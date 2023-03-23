@@ -30,7 +30,16 @@ print(f"Path corpora : '{path_corpora}'")
 print("--> pour spécifier un autre chemin utiliser l'option -d")
 print("-"*40)
 
-def liste_resultats(texte, nlp=spacy.load("fr_core_news_sm")):
+def liste_resultats(texte, nlp =""):
+    #nlp=spacy.load("fr_core_news_sm")):
+    if nlp == "":
+      try:
+        nlp = spacy.load("fr_core_news_sm")
+      except:
+        cmd = "python3 -m spacy download fr_core_news_sm"
+        os.system(cmd)
+        nlp = spacy.load("fr_core_news_sm")
+        
     doc = nlp(texte)
     list_resultats =[]
     for ent in doc.ents:
@@ -44,7 +53,13 @@ for modele in ["sm", "md", "lg"]:
       print(f"Pas de dossier trouvé dans {path_corpora}, traitement terminé")
       exit()
     print("Starting with modèle %s"%modele)
-    nlp = spacy.load("fr_core_news_%s"%modele)
+    nom_complet_modele = "fr_core_news_%s"%modele
+    try:
+        nlp = spacy.load(nom_complet_modele)
+    except:
+        cmd = f"python3 -m spacy download {nom_complet_modele}"
+        os.system(cmd)
+        nlp = spacy.load(nom_complet_modele)
     nom_modele = f"spacy-{modele}"
 
     for subcorpus in liste_subcorpus:
