@@ -6,6 +6,7 @@ import os
 import shutil
 import warnings
 warnings.simplefilter("ignore")
+#TODO: gérer warnings
 from generic_tools import *
 from optparse import OptionParser
 
@@ -16,7 +17,7 @@ def get_parser():
     """
     parser = OptionParser()
     parser.add_option("-d", "--data_path", dest="data_path",
-                      help="""Chemin vers les fichiers txt (exemple DATA/*)""", type="string", default="DATA/*/")
+                      help="""Chemin vers les fichiers txt (exemple DATA/*)""", type="string", default="DATA/")
     parser.add_option('-F', '--Force', help='Recalculer les distances même si déjà faites', action='store_true', default = False)
     return parser
 
@@ -42,19 +43,25 @@ for modele in ["sm", "md", "lg"]:
     if len(liste_subcorpus)==0:
       print(f"Pas de dossier trouvé dans {path_corpora}, traitement terminé")
       exit()
-
     print("Starting with modèle %s"%modele)
     nlp = spacy.load("fr_core_news_%s"%modele)
     nom_modele = f"spacy-{modele}"
 
     for subcorpus in liste_subcorpus:
-
         print("  Processing %s"%subcorpus)
-        liste_txt = glob.glob("%s/*/*.txt"%subcorpus)
+        liste_txt = glob.glob("%s/REF/*.txt"%subcorpus)
+        liste_txt+=  glob.glob("%s/OCR/*/*.txt"%subcorpus)
         print("  nombre de fichiers txt trouvés :",len(liste_txt))
-
         for path in liste_txt: 
-            path_output = "%s_%s.json"%(path, nom_modele)
+            dossiers  = re.split("/", path)[:-1]
+            nom_txt = re.split("/", path)[-1]
+            path_ner = "/".join(dossiers)+"/NER"
+            print(path_ner)
+            os.makedirs(path_ner, exist_ok = True)
+            path_output = "%s/%s_%s.json"%(path_ner, nom_txt, nom_modele)
+            #path_output = f"{path_ner}/{nom_txt}_{nom_modele}.json"
+            print(path_output)
+            1/0
             print("  ...", re.split("/", path_output)[-1])
             if os.path.exists(path_output)==True:
               if options.Force ==True:
@@ -65,4 +72,4 @@ for modele in ["sm", "md", "lg"]:
             texte = lire_fichier(path)
             entites = liste_resultats(texte, nlp)
             stocker(path_output, entites, is_json=True)
-        ### Penser à comenet lancer compute_distances
+        ### Penser à comment lancer compute_distances
