@@ -71,13 +71,10 @@ for modele in ["sm", "md", "lg"]:
             dossiers  = re.split("/", path)[:-1]
             nom_txt = re.split("/", path)[-1]
             path_ner = "/".join(dossiers)+"/NER"
-            print(path_ner)
             os.makedirs(path_ner, exist_ok = True)
             path_output = "%s/%s_%s.json"%(path_ner, nom_txt, nom_modele)
             #path_output = f"{path_ner}/{nom_txt}_{nom_modele}.json"
             print(path_output)
-            1/0
-            print("  ...", re.split("/", path_output)[-1])
             if os.path.exists(path_output)==True:
               if options.Force ==True:
                 print("  Recomputing :",path_output)
