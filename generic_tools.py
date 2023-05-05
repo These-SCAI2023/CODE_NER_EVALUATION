@@ -8,8 +8,14 @@ from jiwer import wer
 from jiwer import cer
 from scipy.stats import entropy
 import scipy
+from difflib import SequenceMatcher
 
 warnings.simplefilter("ignore")
+re_URL = re.compile("^\s*URL.*$", re.MULTILINE)
+re_TAG = re.compile("(<[phl]>)", re.IGNORECASE)
+re_WS = re.compile("\s+")
+re_CTRL = re.compile("[\x00-\x1F]+")
+re_HI = re.compile("[\x80-\xFF]+")
 
 def lire_fichier (chemin, is_json = False):
     f = open(chemin , encoding = 'utf−8')
@@ -148,3 +154,98 @@ def occ_eval(GT_abs, DET_abs):
     if cle not in GT_abs:
       dic["FP"]+=eff_DET
   return dic
+def evaluate_file(text_file, gold_file):
+  import langid
+  filename = text_file
+  opt_ascii = False
+  opt_unlabelled = False
+  opt_noheader = True
+  opt_total = False
+  opt_summary = False
+  sum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ss = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  text = normalize(slurp_file(text_file), opt_ascii, opt_unlabelled)
+  gold = normalize(slurp_file(gold_file), opt_ascii, opt_unlabelled)
+  lang = langid.classify(gold)
+  text_words = re_WS.split(text)
+  gold_words = re_WS.split(gold)
+  if lang[0]=="zh":#TODO: correct for tags
+    text_words = [x for x in text] 
+    gold_words = [x for x in gold]
+  alignment = SequenceMatcher(None, text_words, gold_words)
+  diff = make_diff(alignment, text_words, gold_words)
+  eval_list = evaluate(diff)
+  return eval_list
+def normalize(text, ascii=False, unlabelled=False):
+	text = re_URL.sub("", text)           # remove URL line at start of gold standard files
+	text = re_CTRL.sub(" ", text)         # replace any control characters by spaces (includes newlines)
+
+	if unlabelled:
+		text = re_TAG.sub("\n<p> ", text) # start each segment on new line, normalise tags
+	else:
+		text = re_TAG.sub("\n\g<1> ", text)  # only break lines before segment markers
+
+	text = re_WS.sub(" ", text)           # normalise whitespace (including line breaks) to single spaces
+	if ascii:
+		text = re_HI.sub("", text)        # delete non-ASCII characters (to avoid charset problems)
+
+	return text
+def slurp_file(filename):
+	fh = open(filename)
+	body = fh.read()
+	fh.close()
+	return body
+def make_diff(alignment, text_w, gold_w):
+	diff = []
+	for tag, i1, i2, j1, j2 in alignment.get_opcodes():
+		text_region = text_w[i1:i2]
+		gold_region = gold_w[j1:j2]
+		if tag == "replace":
+			diff.append( ("delete", text_region, []) )
+			diff.append( ("insert", [], gold_region) )
+		else:
+			diff.append( (tag, text_region, gold_region) )
+	return diff
+def evaluate(diff):
+	tp = fp = fn = 0
+	tag_tp = tag_fp = tag_fn = 0
+	for tag, text, gold in diff:
+		text_tags = 0
+		for i in filter(re_TAG.match, text):text_tags+=1
+#		text_tags = len( filter(re_TAG.match, text) )
+		gold_tags = 0
+		for i in filter(re_TAG.match, gold):gold_tags+=1
+#		gold_tags = len( filter(re_TAG.match, gold) )
+		text_l = len(text)
+		gold_l = len(gold)
+		if tag == "delete":
+			fp += text_l
+			tag_fp += text_tags
+		elif tag == "insert":
+			fn += gold_l
+			tag_fn += gold_tags
+		else:
+			tp += text_l
+			tag_tp += text_tags
+			assert text_l == gold_l
+			assert text_tags == gold_tags
+
+	n_text = tp + fp if tp + fp > 0 else 1
+	n_gold = tp + fn if tp + fn > 0 else 1
+	precision = float(tp) / n_text
+	recall = float(tp) / n_gold
+	precision_plus_recall = precision + recall if precision + recall > 0 else 1
+	f_score = 2 * precision * recall / precision_plus_recall
+
+	tags_text = tag_tp + tag_fp if tag_tp + tag_fp > 0 else 1
+	tags_gold = tag_tp + tag_fn if tag_tp + tag_fn > 0 else 1
+	tag_precision = float(tag_tp) / tags_text
+	tag_recall = float(tag_tp) / tags_gold
+	precision_plus_recall = tag_precision + tag_recall if tag_precision + tag_recall > 0 else 1
+	tag_f_score = 2 * tag_precision * tag_recall / precision_plus_recall
+
+	out = {	"f-score":100 * f_score, "precision":100 * precision, "recall":100 * recall, 
+		"tag_f_score":100 * tag_f_score, "tag_precision":100 * tag_precision, "tag_recall":100 * tag_recall, 
+		"tp":tp, "fp":fp, "fn":fn, 
+		"tag_tp":tag_tp, "tag_fp":tag_fp, "tag_fn":tag_fn}
+	return out
