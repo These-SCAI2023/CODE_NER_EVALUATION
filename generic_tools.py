@@ -1,6 +1,7 @@
 import json
 import sklearn
-from sklearn.neighbors import DistanceMetric
+#from sklearn.neighbors import DistanceMetric
+from sklearn.metrics import DistanceMetric
 from sklearn.feature_extraction.text import CountVectorizer
 import warnings
 import re

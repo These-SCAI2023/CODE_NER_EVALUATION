@@ -38,8 +38,8 @@ if len(liste_dossiers_auteurs)==0:
   exit()
 #TOD: dans le code d'extraction des entités, créer le nossier NER
 for auteur in liste_dossiers_auteurs:
-    if "ADAM" not in auteur:
-        continue
+    #if "ADAM" not in auteur:
+     #   continue
     print("-"*20)
     #NB: La structure est différente : un level de plus dans le dossier OCR
     reference_files = glob.glob(f"{auteur}/REF/NER/*.json")
@@ -61,13 +61,23 @@ for auteur in liste_dossiers_auteurs:
             create_str_ner(ocr_path, "tmp/ocr.txt")
             ocr_file = "tmp/ocr.txt"
             ref_file = "tmp/ref.txt"
+            toot=[]
+            for chemin in [ocr_file,ref_file]:
+                with open(chemin ) as f:
+                    toot.append(f.read())
+            distance=get_distances(toot[0],toot[1])
+            print(distance)
             clean_eval_scores = evaluate_file(ocr_file, ref_file)
+
             #remove tags:
             clean_eval_scores = {x:y for x,y in clean_eval_scores.items() if "tag" not in x}
-            new_scores = get_new_scores(ocr_file, ref_file)#TODO:merge
+            new_scores = get_new_scores(toot[0], toot[1])#TODO:merge
             #TODO: CER, WER
+            print(new_scores)
             json_path   = f"{sim_path}sim_{configuration}"
             new_scores["clean_eval"] = clean_eval_scores
+            for k,v in distance.items():
+                new_scores[k]=v
             print("  Writing:",json_path)
             with open(json_path, "w") as w:
                 w.write(json.dumps(new_scores, indent=2))
