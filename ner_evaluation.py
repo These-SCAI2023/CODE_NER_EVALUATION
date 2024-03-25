@@ -42,7 +42,7 @@ for auteur in liste_dossiers_auteurs:
      #   continue
     print("-"*20)
     #NB: La structure est différente : un level de plus dans le dossier OCR
-    reference_files = glob.glob(f"{auteur}/REF/NER/*.json")
+    reference_files = glob.glob(f"{auteur}/*Ref/NER/*.json")
     ocr_paths = glob.glob(f"{auteur}/OCR/*/NER/*.json")
     print(re.split("/",auteur)[-1])
     print("Number of reference files : ",len(reference_files))

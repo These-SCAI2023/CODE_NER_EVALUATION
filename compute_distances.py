@@ -51,11 +51,15 @@ for path_auteur in l_path_auteurs:
     dic_compare.setdefault(file_type, [])
     liste_txt_auteur = glob.glob("%s/*/*.%s"%(path_auteur, file_type))
     print(f"  NB {file_type} :", len(liste_txt_auteur))
+    print(liste_txt_auteur)
 
     for path_file in liste_txt_auteur:
       # parsing nom de fichier 
-      elems = re.split("_", re.split("/", path_file)[-1])
-      auteur,titre, version = elems[:3]
+      elems = re.split("_", re.split("/", path_file)[-2])
+
+      print(elems)
+     # auteur,titre, version = elems[:3]
+      auteur, version = elems[:2]
       version = re.sub("\.txt", "", version)
       if file_type =="txt":
           dic_compare[file_type].append([version, lire_fichier(path_file)])
@@ -64,7 +68,8 @@ for path_auteur in l_path_auteurs:
           configuration = f"{version}_{nom_mod}"
           dic_compare[file_type].append([configuration,lire_fichier(path_file,True)])
           
-  path_json = "%s_%s_distances.json"%(path_auteur, titre)
+  #path_json = "%s_%s_distances.json"%(path_auteur, titre)
+  path_json = "%s_distances.json" % (path_auteur)
   if os.path.exists(path_json):
     if options.Force ==True:
       print("  Recomputing :",path_json)
