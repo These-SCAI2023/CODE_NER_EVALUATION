@@ -1,0 +1,315 @@
+{
+  "txt": {
+    "kraken--tesseract": {
+      "jaccard": [
+        0.5
+      ],
+      "braycurtis": [
+        0.083785980483618
+      ],
+      "dice": [
+        0.3333333333333333
+      ],
+      "cosinus": [
+        0.007639530286239982
+      ],
+      "voc_eval_res": {
+        "precision": 39.268,
+        "recall": 22.2044,
+        "f-score": 28.3679
+      },
+      "KL_res": {
+        "KL divergence": 0.48788139702611255,
+        "Euclidean Dist.": 0.05657843667135832,
+        "WER": 0.6381320648357843,
+        "CER": 0.22706281033959733,
+        "Cosine Dist.": 0.1671714374757466
+      },
+      "occ_eval_res": {
+        "precision": 57.7298,
+        "recall": 54.1501,
+        "f-score": 55.8827
+      }
+    },
+    "kraken--kraken-jspll-pretrain": {
+      "jaccard": [
+        0.0
+      ],
+      "braycurtis": [
+        0.012781978973710542
+      ],
+      "dice": [
+        0.0
+      ],
+      "cosinus": [
+        0.0005570399805943094
+      ],
+      "voc_eval_res": {
+        "precision": 71.8857,
+        "recall": 55.6875,
+        "f-score": 62.7582
+      },
+      "KL_res": {
+        "KL divergence": 0.08529396219769321,
+        "Euclidean Dist.": 0.013104972109272615,
+        "WER": 0.18301571446937706,
+        "CER": 0.05099947312119809,
+        "Cosine Dist.": 0.008277103303880762
+      },
+      "occ_eval_res": {
+        "precision": 82.0574,
+        "recall": 82.0574,
+        "f-score": 82.0574
+      }
+    },
+    "kraken--tesseract-jspll-pretrain": {
+      "jaccard": [
+        0.5
+      ],
+      "braycurtis": [
+        0.08405110766566504
+      ],
+      "dice": [
+        0.3333333333333333
+      ],
+      "cosinus": [
+        0.007673807565169111
+      ],
+      "voc_eval_res": {
+        "precision": 39.7532,
+        "recall": 20.6722,
+        "f-score": 27.2
+      },
+      "KL_res": {
+        "KL divergence": 0.4958495823121784,
+        "Euclidean Dist.": 0.05723646956304628,
+        "WER": 0.6440361165778257,
+        "CER": 0.23111418900579567,
+        "Cosine Dist.": 0.16453928691066544
+      },
+      "occ_eval_res": {
+        "precision": 57.2986,
+        "recall": 53.7457,
+        "f-score": 55.4653
+      }
+    },
+    "kraken--REF": {
+      "jaccard": [
+        0.49038461538461536
+      ],
+      "braycurtis": [
+        0.09602941390749384
+      ],
+      "dice": [
+        0.3248407643312102
+      ],
+      "cosinus": [
+        0.008299104841216987
+      ],
+      "voc_eval_res": {
+        "precision": 38.7534,
+        "recall": 20.8487,
+        "f-score": 27.1117
+      },
+      "KL_res": {
+        "KL divergence": 0.4954684182581621,
+        "Euclidean Dist.": 0.05741487640564857,
+        "WER": 0.6299830888970203,
+        "CER": 0.22175410725975125,
+        "Cosine Dist.": 0.16212833889618705
+      },
+      "occ_eval_res": {
+        "precision": 56.907,
+        "recall": 52.8358,
+        "f-score": 54.7959
+      }
+    },
+    "tesseract--kraken-jspll-pretrain": {
+      "jaccard": [
+        0.5
+      ],
+      "braycurtis": [
+        0.07701901238489338
+      ],
+      "dice": [
+        0.3333333333333333
+      ],
+      "cosinus": [
+        0.005910402993180797
+      ],
+      "voc_eval_res": {
+        "precision": 29.7608,
+        "recall": 40.7717,
+        "f-score": 34.4068
+      },
+      "KL_res": {
+        "KL divergence": 0.379495441482358,
+        "Euclidean Dist.": 0.05305366083769291,
+        "WER": 0.6397672040233218,
+        "CER": 0.24261927105790448,
+        "Cosine Dist.": 0.14231524728199618
+      },
+      "occ_eval_res": {
+        "precision": 59.9138,
+        "recall": 63.8745,
+        "f-score": 61.8307
+      }
+    },
+    "tesseract--tesseract-jspll-pretrain": {
+      "jaccard": [
+        0.0
+      ],
+      "braycurtis": [
+        0.0022141791778831003
+      ],
+      "dice": [
+        0.0
+      ],
+      "cosinus": [
+        1.3825456912419654e-05
+      ],
+      "voc_eval_res": {
+        "precision": 89.8419,
+        "recall": 82.6216,
+        "f-score": 86.0806
+      },
+      "KL_res": {
+        "KL divergence": 0.008495966716634874,
+        "Euclidean Dist.": 0.004543500062575221,
+        "WER": 0.04202557803620568,
+        "CER": 0.009948766074010197,
+        "Cosine Dist.": 0.000665071470876244
+      },
+      "occ_eval_res": {
+        "precision": 95.8871,
+        "recall": 95.8871,
+        "f-score": 95.8871
+      }
+    },
+    "tesseract--REF": {
+      "jaccard": [
+        0.25225225225225223
+      ],
+      "braycurtis": [
+        0.03494234934706839
+      ],
+      "dice": [
+        0.14432989690721648
+      ],
+      "cosinus": [
+        0.003013766787066552
+      ],
+      "voc_eval_res": {
+        "precision": 72.5639,
+        "recall": 69.0382,
+        "f-score": 70.7572
+      },
+      "KL_res": {
+        "KL divergence": 0.05619316169443644,
+        "Euclidean Dist.": 0.011036661203495833,
+        "WER": 0.18587830927704618,
+        "CER": 0.09038856621097217,
+        "Cosine Dist.": 0.004949936038476377
+      },
+      "occ_eval_res": {
+        "precision": 90.8269,
+        "recall": 89.9037,
+        "f-score": 90.363
+      }
+    },
+    "kraken-jspll-pretrain--tesseract-jspll-pretrain": {
+      "jaccard": [
+        0.5
+      ],
+      "braycurtis": [
+        0.07724625822741356
+      ],
+      "dice": [
+        0.3333333333333333
+      ],
+      "cosinus": [
+        0.005924606981078884
+      ],
+      "voc_eval_res": {
+        "precision": 46.8029,
+        "recall": 31.4176,
+        "f-score": 37.5972
+      },
+      "KL_res": {
+        "KL divergence": 0.39485749456089114,
+        "Euclidean Dist.": 0.05339956147399828,
+        "WER": 0.5931149064944569,
+        "CER": 0.23160800914499913,
+        "Cosine Dist.": 0.13945244933362577
+      },
+      "occ_eval_res": {
+        "precision": 64.836,
+        "recall": 60.8157,
+        "f-score": 62.7615
+      }
+    },
+    "kraken-jspll-pretrain--REF": {
+      "jaccard": [
+        0.49038461538461536
+      ],
+      "braycurtis": [
+        0.08936556865312184
+      ],
+      "dice": [
+        0.3248407643312102
+      ],
+      "cosinus": [
+        0.006622034238954133
+      ],
+      "voc_eval_res": {
+        "precision": 40.0283,
+        "recall": 27.7985,
+        "f-score": 32.8108
+      },
+      "KL_res": {
+        "KL divergence": 0.40038852968116134,
+        "Euclidean Dist.": 0.0538878638802252,
+        "WER": 0.5910479939080471,
+        "CER": 0.22869970553425942,
+        "Cosine Dist.": 0.13949064989778936
+      },
+      "occ_eval_res": {
+        "precision": 63.1073,
+        "recall": 58.5925,
+        "f-score": 60.7662
+      }
+    },
+    "tesseract-jspll-pretrain--REF": {
+      "jaccard": [
+        0.25225225225225223
+      ],
+      "braycurtis": [
+        0.03539039144832862
+      ],
+      "dice": [
+        0.14432989690721648
+      ],
+      "cosinus": [
+        0.003077098515592125
+      ],
+      "voc_eval_res": {
+        "precision": 67.2035,
+        "recall": 69.5256,
+        "f-score": 68.3448
+      },
+      "KL_res": {
+        "KL divergence": 0.0598920191818666,
+        "Euclidean Dist.": 0.011173922091754884,
+        "WER": 0.19877276034033758,
+        "CER": 0.09583714547118023,
+        "Cosine Dist.": 0.00549478098426448
+      },
+      "occ_eval_res": {
+        "precision": 90.2336,
+        "recall": 89.3165,
+        "f-score": 89.7727
+      }
+    }
+  },
+  "json": {}
+}
