@@ -58,7 +58,7 @@ for path_auteur in l_path_auteurs:
       elems = re.split("_", re.split("/", path_file)[-2])
 
       print(elems)
-     # auteur,titre, version = elems[:3]
+     # auteur,titre, version = elems[:3]##changement dans le nommage en entrée
       auteur, version = elems[:2]
       version = re.sub("\.txt", "", version)
       if file_type =="txt":
@@ -68,7 +68,7 @@ for path_auteur in l_path_auteurs:
           configuration = f"{version}_{nom_mod}"
           dic_compare[file_type].append([configuration,lire_fichier(path_file,True)])
           
-  #path_json = "%s_%s_distances.json"%(path_auteur, titre)
+  #path_json = "%s_%s_distances.json"%(path_auteur, titre)##changement dans le nommage en entrée
   path_json = "%s_distances.json" % (path_auteur)
   if os.path.exists(path_json):
     if options.Force ==True:
